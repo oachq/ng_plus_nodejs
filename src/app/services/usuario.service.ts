@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
 
 import { RegisterForm } from '../../../interfaces/register-form.interface';
 import { LoginForm } from '../../../interfaces/login-form-interface';
+import { Usuariio } from '../../models/usuario.model';
 
 declare const gapi:any;
 
@@ -19,6 +20,7 @@ const base_url = environment.base_url;
 export class UsuarioService {
 
   public auth2:any;
+  public usuario: Usuariio;
 
   constructor(private http: HttpClient,
               private router:Router,
@@ -27,9 +29,15 @@ export class UsuarioService {
                 this.googleInit();
               }
 
+  get token():string{
+    return localStorage.getItem('token') || '';
+  } 
+
+  get uid():string {
+    return this.usuario.uid || ''
+  }
 
   googleInit(){
-
     return new Promise(resolve =>{
       gapi.load('auth2', ()=>{
         // Retrieve the singleton for the GoogleAuth library and set up the client.
@@ -53,22 +61,24 @@ export class UsuarioService {
   }
 
   validarToken(): Observable<boolean>{
-    const token = localStorage.getItem('token') || '';
+    
     return this.http.get(`${base_url}/login/renew`, {
       headers: {
-        'x-token': token
+        'x-token': this.token
       }
     }).pipe(
-      tap((resp:any) => {
+      map((resp:any) => {
+        const {email, google, img='', nombre, role,  uid} = resp.usuario;
+        this.usuario = new Usuariio (nombre, email, '', img, google, role,  uid)
         localStorage.setItem('token', resp.token);
+        return true
       }),
-      map(resp => true ),
+     
       catchError(error => of(false))
     )
   }
 
   crearUsuario(formData: RegisterForm) {
-
     return this.http.post(`${base_url}/usuarios`, formData)
     .pipe(
       tap((resp:any) => {
@@ -77,8 +87,19 @@ export class UsuarioService {
     )
   }
 
-  loginUsuario(formData: LoginForm) {
+  actualizarPerfil(data: {email:string, nombre:string, role: string}){
+    data = {
+      ...data,
+      role: this.usuario.role
+    }
+    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, {
+      headers: {
+        'x-token': this.token
+      }
+    })
+  }
 
+  loginUsuario(formData: LoginForm) {
     return this.http.post(`${base_url}/login`, formData)
     .pipe(
       tap((resp:any) => {
@@ -89,7 +110,6 @@ export class UsuarioService {
 
 
   loginGoogle(token) {
-
     return this.http.post(`${base_url}/login/google`, {token})
     .pipe(
       tap((resp:any) => {
