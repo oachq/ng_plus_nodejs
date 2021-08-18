@@ -12,6 +12,7 @@ import { RxjsComponent } from './rxjs/rxjs.component';
 import { PerfilComponent } from './perfil/perfil.component';
 
 import { AuthGuard } from '../guars/auth.guard';
+import { UsuariosComponent } from './mantenimiento/usuarios/usuarios.component';
 
 const routes: Routes = [ 
     {
@@ -26,7 +27,8 @@ const routes: Routes = [
           {path: 'rxjs', component: RxjsComponent, data: {titulo: 'RxJs'}},
           {path: 'perfil', component: PerfilComponent, data: {titulo: 'Perfil de usuario'}},
           
-         // {path: '', redirectTo: '/dashboard', pathMatch:'full'},
+         // mantenimiento
+         {path: 'usuario', component: UsuariosComponent, data: {titulo: 'Usuario de aplicacion'}},
         ]
       },
 ];

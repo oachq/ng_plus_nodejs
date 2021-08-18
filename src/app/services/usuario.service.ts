@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 import { RegisterForm } from '../../../interfaces/register-form.interface';
 import { LoginForm } from '../../../interfaces/login-form-interface';
 import { Usuariio } from '../../models/usuario.model';
+import { CargandoUsuario } from '../../../interfaces/cargar_user.interface';
 
 declare const gapi:any;
 
@@ -35,6 +36,14 @@ export class UsuarioService {
 
   get uid():string {
     return this.usuario.uid || ''
+  }
+
+  get headers(){
+    return {
+      headers: {
+        'x-token': this.token
+      }
+    }
   }
 
   googleInit(){
@@ -92,11 +101,7 @@ export class UsuarioService {
       ...data,
       role: this.usuario.role
     }
-    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, {
-      headers: {
-        'x-token': this.token
-      }
-    })
+    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, this.headers)
   }
 
   loginUsuario(formData: LoginForm) {
@@ -116,5 +121,30 @@ export class UsuarioService {
         localStorage.setItem('token', resp.token);
       }) 
     )
+  }
+
+  cargarUsuarios(desde:number = 0){
+      const url = `${base_url}/usuarios?desde=${desde}`;
+      return this.http.get<CargandoUsuario>(url,this.headers)
+                .pipe(
+                  map(resp => {
+                    const usuarios = resp.usuarios.map(
+                      user => new Usuariio(user.nombre,user.email,'', user.img, user.google, user.role, user.uid))  
+                      return {
+                        totalUser: resp.totalUser,
+                        usuarios
+                      }
+                    })
+                      
+                )
+  }
+
+  eliminarUsuario(usuario: Usuariio){
+    const url = `${base_url}/usuarios/${usuario.uid}`;
+    return this.http.delete(url,this.headers)
+  }
+
+  guardarUsuario(usuario: Usuariio){
+    return this.http.put(`${base_url}/usuarios/${usuario.uid}`, usuario, this.headers)
   }
 }

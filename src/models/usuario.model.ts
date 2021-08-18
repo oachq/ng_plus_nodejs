@@ -16,10 +16,12 @@ export class Usuariio {
 
     // /uploads/usuario/no-img
     get imagenUrl(){
-        if(this.img.includes('https')){
+
+        if(!this.img){
+            return `${base_url}/uploads/usuario/no_img`
+        }else if(this.img.includes('https')){
             return this.img;
-        }
-        if (this.img) {
+        }else if (this.img) {
             return `${base_url}/uploads/usuario/${this.img}`;
         }else {
             return `${base_url}/uploads/usuario/no_img`
