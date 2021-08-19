@@ -65,7 +65,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
      }
 
     this.busquedasService.buscar('usuarios',termino)
-        .subscribe(resp => {
+        .subscribe((resp:Usuariio[]) => {
           this.usuarios = resp
         })
   }

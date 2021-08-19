@@ -9,6 +9,8 @@ import {RouterModule } from '@angular/router'
 import { SharedModule } from '../shared/shared.module'; // modulo del shared module. 
 import { ComponentsModule } from '../components/components.module';
 
+//pipes 
+import { PipesModule } from '../pipes/pipes.module';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
@@ -19,7 +21,10 @@ import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { UsuariosComponent } from './mantenimiento/usuarios/usuarios.component';
-//import { ModalImagenComponent } from '../components/modal-imagen/modal-imagen.component';
+import { HospitalesComponent } from './mantenimiento/hospitales/hospitales.component';
+import { MedicosComponent } from './mantenimiento/medicos/medicos.component';
+import { MedicoComponent } from './mantenimiento/medicos/medico/medico.component';
+
 
 
 
@@ -33,7 +38,10 @@ import { UsuariosComponent } from './mantenimiento/usuarios/usuarios.component';
     PromesasComponent,
     RxjsComponent,
     PerfilComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    HospitalesComponent,
+    MedicosComponent,
+    MedicoComponent
   ],
   exports: [
     DashboardComponent,
@@ -51,7 +59,7 @@ import { UsuariosComponent } from './mantenimiento/usuarios/usuarios.component';
     FormsModule,
     ReactiveFormsModule,
     ComponentsModule,
-    //ModalImagenComponent,
+    PipesModule
 
     //AppRoutingModule
     ]
