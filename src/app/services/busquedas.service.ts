@@ -44,12 +44,18 @@ export class BusquedasService {
   private transformarMedicos (resultado: any[]):Medico[]{
     return resultado
   }
+
+  busquedaGlobal(termino:string){
+    const url = `${base_url}/todo/${termino}`;
+      return this.http.get(url,this.headers)
+  }
+
+
   buscar(
     tipo: 'usuarios'|'medicos'|'hospitales',
     termino: string
     ){
     const url = `${base_url}/todo/coleccion/${tipo}/${termino}`;
-    console.log(url)
       return this.http.get<any[]>(url,this.headers)
             .pipe(
               map ((resp:any) => {

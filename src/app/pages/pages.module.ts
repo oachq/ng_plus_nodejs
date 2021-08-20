@@ -24,6 +24,7 @@ import { UsuariosComponent } from './mantenimiento/usuarios/usuarios.component';
 import { HospitalesComponent } from './mantenimiento/hospitales/hospitales.component';
 import { MedicosComponent } from './mantenimiento/medicos/medicos.component';
 import { MedicoComponent } from './mantenimiento/medicos/medico/medico.component';
+import { BusquedaComponent } from './busqueda/busqueda.component';
 
 
 
@@ -41,7 +42,8 @@ import { MedicoComponent } from './mantenimiento/medicos/medico/medico.component
     UsuariosComponent,
     HospitalesComponent,
     MedicosComponent,
-    MedicoComponent
+    MedicoComponent,
+    BusquedaComponent
   ],
   exports: [
     DashboardComponent,
